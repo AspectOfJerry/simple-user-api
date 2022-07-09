@@ -149,7 +149,7 @@ app.delete('/delete/:userID', (req, res) => {
 });
 
 // DELETE
-app.delete('/users', (req, res) => {
+app.delete('/all/users', (req, res) => {
     // Delete all users
     try {
         users.splice(0, users.length);
