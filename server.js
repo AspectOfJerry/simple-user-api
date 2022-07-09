@@ -2,7 +2,7 @@ const express = require('express');
 
 const app = express();
 
-const PORT = 8080;
+const PORT = 8081;
 
 // pase JSON
 app.use(express.json());
@@ -10,12 +10,6 @@ app.use(express.json());
 // parse URL encoded data
 app.use(express.urlencoded({extended: true}));
 
-// creating the server
-app.listen(PORT, () => {
-    console.log(`Listening on port ${PORT}`);
-});
-
-//
 
 const users = [{
     id: 1,
@@ -29,10 +23,19 @@ const users = [{
 }]
 
 
+// Creating the server
+app.listen(PORT, () => {
+    console.log(`Listening on port ${PORT}`);
+});
+
+
+
 // Routes
+// POST
 app.post("/create", (req, res) => {
+    // Create a user
     // Check if request body is empty
-    if(!Object.keys(req.body).length) {
+    if(Object.keys(req.body).length === 0) {
         return res.status(400).json({
             message: "Request body cannot be empty",
         });
@@ -54,37 +57,110 @@ app.post("/create", (req, res) => {
         res.status(201).json({
             message: "Successfully created a new user",
         });
-    } catch(error) {
+    } catch(err) {
         res.status(500).json({
             message: "Failed to create user",
         });
     }
 });
 
+// GET
 app.get("/users", (req, res) => {
+    // Retrieves all users
     try {
         res.status(200).json({
             users
         });
-    } catch(error) {
+    } catch(err) {
         res.status(500).json({
             message: "Failed to retrieve all users",
         });
     }
 });
 
-app.get('/user/:userID', (req, res) => {
+// GET
+app.get("/users/:userID", (req, res) => {
     // Returns a user by ID
+    const id = parseInt(req.params.userID);
+    console.log(id);
+    try {
+        let user = users.find((user) => user.id === id);
+        if(!user) {
+            return res.status(404).json({
+                message: "User not found",
+            });
+        }
+        res.status(200).json({
+            user,
+        });
+    } catch(err) {
+        res.status(500).json({
+            message: "Failed to retrieve user",
+        });
+    }
 });
 
-app.put('/user/:userID', (req, res) => {
+// PUT
+app.put("/users/:userID", (req, res) => {
     // Update a user by ID
+    try {
+        const id = parseInt(req.params.userID);
+        let user = users.find((user) => user.id === id);
+        if(!user) {
+            return res.status(404).json({
+                message: "User not found",
+            });
+        }
+        const userIDX = users.indexOf(user);
+        users[userIDX].name = req.body.name || users[userIDX].name;
+        users[userIDX].age = req.body.age || users[userIDX].age;
+        res.status(200).json({
+            message: "Successfully updated user",
+            user,
+        });
+    } catch(err) {
+        res.status(500).json({
+            message: "Failed to retrieve user",
+        });
+    }
 });
 
+// DELETE
 app.delete('/delete/:userID', (req, res) => {
     // Delete a user by ID
+    try {
+        const id = req.params.userID;
+        let userIDX = users.findIndex((user) => user.id === id);
+        if(!userIDX) {
+            res.status(404).json({
+                message: "User not found",
+            });
+        }
+        users.splice(userIDX, 1);
+        res.status(200).json({
+            message: "Successfully deleted user",
+            users,
+        });
+    } catch(err) {
+        res.status(500).json({
+            message: "Failed to delete user",
+        });
+    }
 });
 
+// DELETE
 app.delete('/users', (req, res) => {
     // Delete all users
+    try {
+        users.splice(0, users.length);
+        res.status(200).json({
+            message: "Successfully deleted all users",
+            users,
+        });
+    } catch(err) {
+        res.status(500).json({
+            message: "Failed to delete users",
+            x,
+        });
+    }
 });
