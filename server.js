@@ -2,7 +2,11 @@ const express = require('express');
 
 const app = express();
 
-const PORT = 8081;
+const PORT = 443;
+
+const key = '';
+const cert = '';
+
 
 // pase JSON
 app.use(express.json());
@@ -25,10 +29,9 @@ const users = [];
 // }]
 
 // Creating the server
-app.listen(PORT, () => {
+app.listen(PORT, '127.0.0.1', () => {
     console.log(`Listening on port ${PORT}`);
 });
-
 
 
 // Routes
