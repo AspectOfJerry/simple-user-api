@@ -1,12 +1,11 @@
+const fs = require('fs');
 const express = require('express');
+const https = require('https');
+
 
 const app = express();
 
 const PORT = 443;
-
-const key = '';
-const cert = '';
-
 
 // pase JSON
 app.use(express.json());
@@ -14,24 +13,19 @@ app.use(express.json());
 // parse URL encoded data
 app.use(express.urlencoded({extended: true}));
 
-
 const users = [];
 
-// const users = [{
-//     id: 1,
-//     name: 'Jane Doe',
-//     age: 22,
-// },
-// {
-//     id: 2,
-//     name: "John Doe",
-//     age: 31,
-// }]
+const key = fs.readFileSync('./aspectofjerry_dev/aspectofjerry_dev.txt');
+const cert = fs.readFileSync('./aspectofjerry_dev/aspectofjerry_dev.crt');
 
 // Creating the server
-app.listen(PORT, '127.0.0.1', () => {
-    console.log(`Listening on port ${PORT}`);
+https.createServer({
+    key: key,
+    cert: cert,
+}, app).listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });
+
 
 
 // Routes
