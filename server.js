@@ -22,7 +22,7 @@ const cert = fs.readFileSync('./aspectofjerry_dev/aspectofjerry_dev.crt');
 https.createServer({
     key: key,
     cert: cert,
-}, app).listen(PORT, () => {
+}, app).listen(PORT, '192.168.112.183', () => { // IP address of the server ('ipconfig /all' in cmd and under 'Wireless LAN adapter Wi-Fi')
     console.log(`Server is running on port ${PORT}`);
 });
 
