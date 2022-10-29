@@ -5,7 +5,7 @@ const https = require('https');
 
 const app = express();
 
-const PORT = 443;
+const PORT = 80;
 
 // pase JSON
 app.use(express.json());
@@ -15,16 +15,21 @@ app.use(express.urlencoded({extended: true}));
 
 const users = [];
 
-const key = fs.readFileSync('./aspectofjerry_dev/aspectofjerry_dev.txt');
-const cert = fs.readFileSync('./aspectofjerry_dev/aspectofjerry_dev.crt');
+const key = fs.readFileSync('./aspectofjerry_dev/aspectofjerry_dev.key', 'utf8');
+const cert = fs.readFileSync('./aspectofjerry_dev/aspectofjerry_dev.crt', 'utf8');
+
 
 // Creating the server
-https.createServer({
+/*https.createServer({
     key: key,
     cert: cert,
-}, app).listen(PORT, '192.168.112.183', () => { // IP address of the server ('ipconfig /all' in cmd and under 'Wireless LAN adapter Wi-Fi')
+}, app)*/
+
+app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
+
+
 
 
 
