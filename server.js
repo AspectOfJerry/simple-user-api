@@ -5,7 +5,7 @@ const https = require('https');
 
 const app = express();
 
-const PORT = 80;
+const PORT = 3000;
 
 // pase JSON
 app.use(express.json());
@@ -15,22 +15,10 @@ app.use(express.urlencoded({extended: true}));
 
 const users = [];
 
-const key = fs.readFileSync('./aspectofjerry_dev/aspectofjerry_dev.key', 'utf8');
-const cert = fs.readFileSync('./aspectofjerry_dev/aspectofjerry_dev.crt', 'utf8');
-
-
-// Creating the server
-/*https.createServer({
-    key: key,
-    cert: cert,
-}, app)*/
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
-
-
-
 
 
 // Routes
